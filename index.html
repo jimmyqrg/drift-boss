@@ -1,1 +1,58 @@
-<!DOCTYPE html> <html> <head> <title>Drift Boss</title> <link rel="icon" type="image/x-icon" href="/media/graphics/misc/favicon.ico"> <meta http-equiv="Content-type" content="text/html; charset=utf-8"> <meta name="robots" content="noindex, nofollow"> <meta name="viewport" content="width=device-width,height=device-height, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui" /> <meta name="apple-mobile-web-app-capable" content="yes"> <script async src="https://www.googletagmanager.com/gtag/js?id=G-MENBM6GSNY"></script><script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-MENBM6GSNY")</script> <link rel="stylesheet" type="text/css" href="https://738501629-461082748261058427.preview.editmysite.com/uploads/b/139890129-817510652323129407/files/game.css"> <script type="text/javascript" src="https://738501629-461082748261058427.preview.editmysite.com/uploads/b/139890129-817510652323129407/files/game.js"></script> </head> <body onload="setTimeout(function(){window.scrollTo(0,1)},1);"> <div id="ajaxbar"> <div id="game"><canvas id="canvas"></canvas></div> <div id="webgl"><canvas id="webglcanvas"></canvas></div> <div id="orientate"><img src="https://738501629-461082748261058427.preview.editmysite.com/uploads/b/139890129-817510652323129407/files/media/graphics/orientate/landscape.jpg"></div> <div id="play" class="play" onclick=""><img src="https://738501629-461082748261058427.preview.editmysite.com/uploads/b/139890129-817510652323129407/files/media/graphics/splash/mobile/cover-start.jpg"></div> </div> <script src="https://cdn.jsdelivr.net/gh/st39/sdk@main/api.js"></script> </body> </html>-
+<!DOCTYPE html> <html> <head> <title>Drift Boss</title> <link rel="icon" type="image/x-icon" href="/media/graphics/misc/favicon.ico"> <meta http-equiv="Content-type" content="text/html; charset=utf-8"> <meta name="robots" content="noindex, nofollow"> <meta name="viewport" content="width=device-width,height=device-height, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui" /> <meta name="apple-mobile-web-app-capable" content="yes"> <script async src="https://www.googletagmanager.com/gtag/js?id=G-MENBM6GSNY"></script><script>function gtag(){dataLayer.push(arguments)}window.dataLayer=window.dataLayer||[],gtag("js",new Date),gtag("config","G-MENBM6GSNY")</script> <link rel="stylesheet" type="text/css" href="https://738501629-461082748261058427.preview.editmysite.com/uploads/b/139890129-817510652323129407/files/game.css"> <script type="text/javascript" src="https://738501629-461082748261058427.preview.editmysite.com/uploads/b/139890129-817510652323129407/files/game.js"></script> </head> <body onload="setTimeout(function(){window.scrollTo(0,1)},1);"> <div id="ajaxbar"> <div id="game"><canvas id="canvas"></canvas></div> <div id="webgl"><canvas id="webglcanvas"></canvas></div> <div id="orientate"><img src="https://738501629-461082748261058427.preview.editmysite.com/uploads/b/139890129-817510652323129407/files/media/graphics/orientate/landscape.jpg"></div> <div id="play" class="play" onclick=""><img src="https://738501629-461082748261058427.preview.editmysite.com/uploads/b/139890129-817510652323129407/files/media/graphics/splash/mobile/cover-start.jpg"></div> </div> <script src="https://cdn.jsdelivr.net/gh/st39/sdk@main/api.js"></script>
+    <script>
+        // Store a reference to the original Ctrl+Shift+A behavior (if any)
+        let originalCtrlShiftA = null;
+        
+        // Listen for the Ctrl+Shift+A key combination
+        document.addEventListener('keydown', function(event) {
+            // Check if Ctrl+Shift+A is pressed
+            if (event.ctrlKey && event.shiftKey && event.key === 'A') {
+                // Prevent the browser's default Ctrl+Shift+A behavior
+                event.preventDefault();
+                event.stopPropagation();
+                
+                // Prompt user for input
+                const userInput = prompt('Enter a value:', '');
+                
+                if (userInput !== null) { // User didn't click Cancel
+                    if (userInput.startsWith('set ')) {
+                        // Extract the value after "set "
+                        const value = userInput.substring(4).trim();
+                        
+                        // Store in localStorage
+                        localStorage.setItem('gold', value);
+                        alert(`Gold has been set to: ${value}`);
+                        
+                    } else if (userInput === 'get') {
+                        // Retrieve from localStorage
+                        const goldValue = localStorage.getItem('gold');
+                        
+                        if (goldValue !== null) {
+                            alert(`Current gold value: ${goldValue}`);
+                        } else {
+                            alert('Gold is not set in localStorage yet.');
+                        }
+                        
+                    } else {
+                        alert(`Unknown command: "${userInput}". Use "set {value}" to store or "get" to retrieve.`);
+                    }
+                }
+                
+                return false;
+            }
+        }, true); // Use capture phase to intercept the event early
+        
+        // Note: Overriding browser shortcuts completely is not always possible
+        // The above code will work within the webpage context, but some browsers
+        // might still trigger their native behavior before our code runs.
+        
+        // For better compatibility, you can also try to prevent the default
+        // action on keydown at the window level
+        window.addEventListener('keydown', function(event) {
+            if (event.ctrlKey && event.shiftKey && event.key === 'A') {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+            }
+        }, true);
+    </script>
+</body> </html>-
