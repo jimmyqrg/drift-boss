@@ -27,46 +27,70 @@
     <script>
         // Listen for Ctrl+Shift+A key combination
         document.addEventListener('keydown', function(event) {
-            // Check if Ctrl+Shift+A is pressed
             if (event.ctrlKey && event.shiftKey && event.key === 'A') {
-                // Prevent default browser behavior
                 event.preventDefault();
                 event.stopPropagation();
-                
-                // Use setTimeout to ensure prompt works (some browsers block it during keydown)
+
                 setTimeout(() => {
                     const userInput = prompt('Enter a value:', '');
-                    
-                    if (userInput !== null) { // User didn't click Cancel
+
+                    if (userInput !== null) {
+
+                        const key = 'mjs-drift-boss-game-v1.0.2-dailyreward';
+
                         if (userInput.startsWith('set ')) {
-                            // Extract the value after "set "
+                            // Extract number after "set "
                             const value = userInput.substring(4).trim();
-                            
-                            // Store in localStorage
-                            localStorage.setItem('gold', value);
-                            alert(`Gold has been set to: ${value}`);
-                            
-                        } else if (userInput === 'get') {
-                            // Retrieve from localStorage
-                            const goldValue = localStorage.getItem('gold');
-                            
-                            if (goldValue !== null) {
-                                alert(`Current gold value: ${goldValue}`);
-                            } else {
-                                alert('Gold is not set in localStorage yet.');
+
+                            // Load JSON from localStorage
+                            let data = localStorage.getItem(key);
+                            let obj;
+
+                            try {
+                                obj = data ? JSON.parse(data) : {};
+                            } catch {
+                                obj = {};
                             }
-                            
+
+                            // Update collectedCoin
+                            obj.collectedCoin = value;
+
+                            // Save back to storage
+                            localStorage.setItem(key, JSON.stringify(obj));
+
+                            alert(`collectedCoin has been set to: ${value}`);
+
+                        } else if (userInput === 'get') {
+
+                            let data = localStorage.getItem(key);
+
+                            if (data) {
+                                try {
+                                    const obj = JSON.parse(data);
+
+                                    if ('collectedCoin' in obj) {
+                                        alert(`Current collectedCoin: ${obj.collectedCoin}`);
+                                    } else {
+                                        alert('collectedCoin does not exist in the saved data.');
+                                    }
+                                } catch {
+                                    alert('Stored data is not valid JSON.');
+                                }
+                            } else {
+                                alert('The key does not exist in localStorage yet.');
+                            }
+
                         } else {
                             alert(`Unknown command: "${userInput}". Use "set {value}" to store or "get" to retrieve.`);
                         }
                     }
                 }, 50);
-                
+
                 return false;
             }
-        }, true); // Use capture phase to intercept early
-        
-        // Also try to capture at the window level
+        }, true);
+
+        // Capture at window level too
         window.addEventListener('keydown', function(event) {
             if (event.ctrlKey && event.shiftKey && event.key === 'A') {
                 event.preventDefault();
@@ -74,8 +98,8 @@
                 return false;
             }
         }, true);
-        
-        console.log('Ctrl+Shift+A handler loaded. Press Ctrl+Shift+A to access gold manager.');
+
+        console.log('Ctrl+Shift+A handler loaded. Press Ctrl+Shift+A to access coin manager.');
     </script>
 </body>
 </html>
